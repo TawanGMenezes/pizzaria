@@ -37,7 +37,7 @@ pizzaJson.map((item, index) => {
       }
       size.querySelector('span').innerHTML = pizzaJson[key].sizes[sizeIndex]
     })
-    c('pizzaInfo--qt').innerHTML = modalQt
+    c('.pizzaInfo--qt').innerHTML = modalQt
     //modal com efeito utilizando o timeout
     c('.pizzaWindowArea').style.opacity = 0;
     c('.pizzaWindowArea').style.display = 'flex'
@@ -47,11 +47,41 @@ pizzaJson.map((item, index) => {
 
 
   })
-
-
-
-
-
   //inserindo o clone de acordo com o map na area das pizza
   c('.pizza-area').append(pizzaItem)
+})
+
+//Eventos do modal
+//fechando o modal
+const closeModal = () => {
+  c('.pizzaWindowArea').style.opacity = 0;
+  setTimeout(() => {
+    c('.pizzaWindowArea').style.display = 'none'
+  }, 500);
+}
+
+//selecionando e adicionando o evento de click nos botoes de cancelar
+cs('.pizzaInfo--cancelButton, .pizzaInfo--cancelMobileButton').forEach((item) => {
+  item.addEventListener('click', closeModal)
+})
+
+//aumentar e diminuir a qtde
+c('.pizzaInfo--qtmenos').addEventListener('click', () => {
+  if (modalQt > 1) {
+    modalQt--
+    c('.pizzaInfo--qt').innerHTML = modalQt
+  }
+})
+
+c('.pizzaInfo--qtmais').addEventListener('click', () => {
+  modalQt++;
+  c('.pizzaInfo--qt').innerHTML = modalQt
+})
+
+//Evento de click nos tamanhos, remove dos outros tamanho o selected e add em qual foi clicado
+cs('.pizzaInfo--size').forEach((size, sizeIndex) => {
+  size.addEventListener('click', (e) => {
+    c('.pizzaInfo--size.selected').classList.remove('selected')
+    size.classList.add('selected')
+  })
 })
