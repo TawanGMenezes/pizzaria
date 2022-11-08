@@ -111,8 +111,22 @@ c('.pizzaInfo--addButton').addEventListener('click', () => {
   updateCart()
   closeModal()
 })
+//abrindo o cart no mobile
+c('.menu-openner').addEventListener('click', () => {
+  if (cart.length > 0) {
+    c('aside').style.left = '0'
+  }
+})
+//fehcando o cart no mobile
+c('.menu-closer').addEventListener('click', () => {
+  c('aside').style.left = '100vw'
+}
+)
+
 
 function updateCart() {
+  c('.menu-openner span').innerHTML = cart.length
+
 
   if (cart.length > 0) {
     c('aside').classList.add('show')
@@ -141,7 +155,7 @@ function updateCart() {
       }
 
       let pizzaName = `${pizzaItem.name} (${pizzaSizeName})`
-
+      //preenchendo o cart
       cartItem.querySelector('img').src = pizzaItem.img
       cartItem.querySelector('.cart--item-nome').innerHTML = pizzaName
       cartItem.querySelector('.cart--item--qt').innerHTML = cart[i].qt
@@ -161,6 +175,7 @@ function updateCart() {
 
       c('.cart').append(cartItem)
     }
+    //add as info de valores do cart
     desconto = subtotal * 0.1
     total = subtotal - desconto
 
@@ -169,5 +184,6 @@ function updateCart() {
     c('.total span:last-child').innerHTML = `R$ ${total.toFixed(2)}`
   } else {
     c('aside').classList.remove('show')
+    c('aside').style.left = '100vw'
   }
 }
