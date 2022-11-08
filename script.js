@@ -1,4 +1,6 @@
+let cart = []
 let modalQt = 1
+let modalKey = 0
 //Definindo as constantes para economizar codigo
 const c = (el) => document.querySelector(el);
 const cs = (el) => document.querySelectorAll(el);
@@ -20,6 +22,8 @@ pizzaJson.map((item, index) => {
     //saindo do elemento 'a' e indo para o mais proximo chamado 'pizza-item' para
     //acessar o atributo que foi setado onde identifica qual é a pizza
     let key = e.target.closest('.pizza-item').getAttribute('data-key')
+    //definindo a pizza selecionana na variavel global para ser utilizada no carrinho
+    modalKey = key
     //definindo a quantidade que irá abrir no modal
     modalQt = 1
     //preenchendo as info do modal apos descobrir qual pizza foi clicada
@@ -80,8 +84,43 @@ c('.pizzaInfo--qtmais').addEventListener('click', () => {
 
 //Evento de click nos tamanhos, remove dos outros tamanho o selected e add em qual foi clicado
 cs('.pizzaInfo--size').forEach((size, sizeIndex) => {
-  size.addEventListener('click', (e) => {
+  size.addEventListener('click', () => {
     c('.pizzaInfo--size.selected').classList.remove('selected')
     size.classList.add('selected')
   })
 })
+//evento de add no cart
+c('.pizzaInfo--addButton').addEventListener('click', () => {
+  //pegando qual a pizza
+  let size = parseInt(c('.pizzaInfo--size.selected').getAttribute('data-key'))
+  //criando um identificador de pizza e tamanho no cart
+  let identifier = pizzaJson[modalKey].id + '@' + size
+  //verificando se pizza/tam ja tem no cart
+  let key = cart.findIndex((item) => item.identifier == identifier)
+  //caso ja tem a pizza/tam altera a qtde ou insere
+  if (key > -1) {
+    cart[key].qt += modalQt
+  } else {
+    cart.push({
+      identifier,
+      id: pizzaJson[modalKey].id,
+      size: size,
+      qt: modalQt
+    })
+  }
+  updateCart
+  closeModal()
+})
+
+function updateCart() {
+
+  if (cart.length > 0) {
+    c('aside').classList.add('show')
+    for (let i in cart) {
+      let pizzaItem = pizzaJson.find(item)=> item.id == cart[i].id
+
+    }
+  } else {
+    c('aside').classList.remove('show')
+  }
+}
